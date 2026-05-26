@@ -120,6 +120,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
       - name: Prepare Environment
         run: |
           if [ -f ".env.testing" ]; then
@@ -130,9 +133,6 @@ jobs:
           if [ -f "artisan" ]; then
             php artisan key:generate --env=testing
           fi
-
-      - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Run Tests
         shell: bash
