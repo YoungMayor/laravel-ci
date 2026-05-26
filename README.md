@@ -1,37 +1,30 @@
 # ⚡ Laravel CI Workflows
 
-A collection of reusable, high-performance GitHub Actions workflows designed specifically for Laravel applications. Easily automate your testing, coverage reporting, and code quality checks without repeating yourself.
+A collection of reusable, high-performance GitHub Actions workflows designed specifically for Laravel applications. Easily automate your testing, coverage reporting, code quality checks, and deployment pipelines.
 
 ---
 
-## 📊 Workflows
+## 📦 Available Workflows
 
-### 🧪 Test Coverage Commenter (`coverage-comment.yml`)
-
-Runs your Pest test suite, generates a detailed coverage report, and posts a clean, sticky comment on your Pull Requests with the coverage percentage and file breakdown.
-
-#### Features
-- 🚀 Setup PHP 8.3 with optimized Composer caching
-- 🧪 Executes [Pest PHP](https://pestphp.com/) with coverage enabled
-- 💬 Formats and posts an interactive coverage summary directly to the PR
-- 💾 Automatically uploads Laravel logs (`storage/logs`) on failure
+| Workflow | Description | File Path |
+| :--- | :--- | :--- |
+| **🧪 Test Coverage Commenter** | Runs Pest tests, generates coverage reports, and posts sticky comments on PRs. | [coverage-comment.yml](file:///.github/workflows/coverage-comment.yml) |
 
 ---
 
-## 🛠️ Usage
+## 🚀 Getting Started
 
-To use this workflow in your Laravel projects, reference it inside your GitHub Actions workflow configuration (e.g. `.github/workflows/ci.yml`):
+To use these workflows in your repository, reference them in your workflow files (e.g. `.github/workflows/ci.yml`):
+
+### Example: Test Coverage Commenter
 
 ```yaml
 name: CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
-# Required permissions for the coverage commenter
 permissions:
   contents: read
   pull-requests: write
@@ -42,8 +35,20 @@ jobs:
     secrets: inherit
 ```
 
-> [!IMPORTANT]
-> Ensure your target repository allows GitHub Actions to read/write PR contents (`pull-requests: write`). If you are running tests on PRs from forks, note that standard fork restrictions may apply to write tokens.
+---
+
+## 🛠️ Individual Workflow Reference
+
+### 🧪 Test Coverage Commenter (`coverage-comment.yml`)
+
+Runs your Pest test suite, parses coverage, and posts an interactive summary directly to the PR comments.
+
+#### Requirements
+- **Test Framework**: Pest PHP
+- **Permissions**: Requires `pull-requests: write` and `contents: read` permissions.
+
+> [!NOTE]
+> For PRs from external forks, GitHub downgrades the `GITHUB_TOKEN` to read-only for security reasons. As a result, the sticky comment step will be skipped or fail for external fork PRs unless using `pull_request_target` (which should be done with caution).
 
 ---
 
