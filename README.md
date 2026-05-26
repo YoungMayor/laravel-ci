@@ -43,8 +43,36 @@ jobs:
 
 Runs your Pest test suite, parses coverage, and posts an interactive summary directly to the PR comments.
 
+#### Configuration Options
+
+You can pass customizable inputs under the `with` block:
+
+| Input | Description | Default |
+| :--- | :--- | :--- |
+| `php-version` | PHP version to setup. | `8.3` |
+| `php-extensions` | Additional PHP extensions to install. | `dom, curl, libxml, ...` |
+| `test-command` | The command to run tests and coverage. | `./vendor/bin/pest --ci --coverage` |
+| `coverage-driver` | PHP extension for coverage. | `pcov` (much faster than `xdebug`) |
+| `min-coverage` | Target minimum coverage percentage. | `0` |
+| `fail-on-low-coverage` | Fail build if coverage is below target. | `false` |
+| `build-assets` | Build assets before tests. | `false` |
+| `asset-build-command` | Install + build command (auto-detects npm, yarn, pnpm, bun if set to `auto`). | `auto` |
+| `node-version` | Node version to use for asset builds. | `20` |
+
+Example with inputs:
+```yaml
+jobs:
+  coverage:
+    uses: youngmayor/laravel-ci/.github/workflows/coverage-comment.yml@v1
+    with:
+      min-coverage: 80
+      fail-on-low-coverage: true
+      build-assets: true
+    secrets: inherit
+```
+
 #### Requirements
-- **Test Framework**: Pest PHP
+- **Test Framework**: Pest PHP (or PHPUnit configured via `test-command`)
 - **Permissions**: Requires `pull-requests: write` and `contents: read` permissions.
 
 > [!NOTE]
